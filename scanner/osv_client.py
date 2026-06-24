@@ -2,13 +2,14 @@ import requests
 import pprint
 from models import Vulnerability
 from osv_parser import parse_vulns
+# from packaging import version
 
 def get_vulnerabilities(
     package_name,
-    version
+    package_version
 ):
     payload = {
-    "version":version,
+    "version":package_version,
     "package":{
         "name":package_name,
         "ecosystem":"PyPI"
@@ -18,15 +19,19 @@ def get_vulnerabilities(
                             json=payload)
 
     data = response.json()
+
     vulnerabilities=[]
     for vuln in data.get("vulns", []):
         # if "GHSA" not in vuln["id"]:
         #     continue
         if not vuln:
             continue
+
+        # pprint.pprint(vuln["affected"][0].get("ranges")[0].get("events")[1].get("fixed"))
+        # print("\n\n\n\n\n\n")
         
         vulnerabilities.append(
-            parse_vulns(vuln)
+            parse_vulns(vuln, package_name, package_version)
         )
         # vulnerabilities.append(
         #     Vulnerability(

@@ -1,5 +1,6 @@
 from requirementParser import parse_reqs
 from osv_client import get_vulnerabilities
+from models import Remediation
 
 deps = parse_reqs("../test-repos/vuln-repo/requirements.txt")
 
@@ -14,13 +15,27 @@ deps = parse_reqs("../test-repos/vuln-repo/requirements.txt")
 # print_report(deps)
 # print("\n\n\n")
 
-# get_vulnerabilities(deps[1].name, deps[1].version)
-
+# vul = get_vulnerabilities(deps.name, deps.version)
+# for v in vul:
+#     print(v)
+#     print("\n\n\n\n\n")
+remediation_methods=[]
 for dep in deps:
     vulns = get_vulnerabilities(dep.name, dep.version)
-    print(f"found vulnerabilities in {dep.name}:")
-    for vuln in vulns:
-        print(f"{vuln.id} --> {vuln.summary}  -->  {vuln.aliases}")
-    print("\n")
+    for vul in vulns:
+        remediation_methods.append(
+            Remediation(
+                package=dep.name,
+                current_version=dep.version,
+                vulnerability=vul,
+                severity=vul.severity,
+                recommended_fix=vul.recommended
+            )
+        )
+    
+
+for remediation in remediation_methods:
+    print(remediation)
+    print("\n\n\n\n")
 
 
