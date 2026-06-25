@@ -48,6 +48,7 @@ def parse_vulns(vuln_json, package, package_version):
     return Vulnerability(
         id=vuln_json.get("id"),
         package= package,
+        current_version=package_version,
         summary=summary,
         severity=severity,
         aliases=aliases,

@@ -9,6 +9,7 @@ class Dependency:
 class Vulnerability:
     id: str
     package: str
+    current_version: str
     summary: str
     severity: str | None
     aliases: list[str]
@@ -16,12 +17,11 @@ class Vulnerability:
     recommended: str | None
 
 @dataclass
-class Remediation:
+class RemediationAction:
     package: str
     current_version: str
-    vulnerability: Vulnerability
-    severity: str
     recommended_fix: str
+    vulnerability: list[str]
 
 
 

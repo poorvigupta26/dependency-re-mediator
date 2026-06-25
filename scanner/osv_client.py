@@ -1,6 +1,5 @@
 import requests
 import pprint
-from models import Vulnerability
 from osv_parser import parse_vulns
 # from packaging import version
 
